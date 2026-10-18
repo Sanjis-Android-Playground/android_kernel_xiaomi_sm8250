@@ -75,6 +75,7 @@ static atomic_t balance_mode = ATOMIC_INIT(0);
 static atomic_t board_sensor_temp_comp_default = ATOMIC_INIT(0);
 static atomic_t cpu_nolimit_temp_default = ATOMIC_INIT(0);
 static atomic_t wifi_limit = ATOMIC_INIT(0);
+static atomic_t flash_state = ATOMIC_INIT(0);
 
 static char boost_buf[128];
 const char *board_sensor;
@@ -1911,6 +1912,28 @@ static DEVICE_ATTR(wifi_limit, 0664,
 	   thermal_wifi_limit_show, thermal_wifi_limit_store);
 
 static ssize_t
+thermal_flash_state_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	return snprintf(buf, PAGE_SIZE, "%d\n", atomic_read(&flash_state));
+}
+
+static ssize_t
+thermal_flash_state_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t len)
+{
+	int val = -1;
+
+	val = simple_strtol(buf, NULL, 10);
+
+	atomic_set(&flash_state, val);
+	return len;
+}
+
+static DEVICE_ATTR(flash_state, 0664,
+	   thermal_flash_state_show, thermal_flash_state_store);
+
+static ssize_t
 thermal_cpu_nolimit_temp_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -2018,6 +2041,10 @@ static int create_thermal_message_node(void)
 		if (ret < 0)
 			pr_warn("Thermal: create cpu nolimit node failed\n");
 
+		ret = sysfs_create_file(&thermal_message_dev.kobj, &dev_attr_flash_state.attr);
+		if (ret < 0)
+			pr_warn("Thermal: create flash state node failed\n");
+
 		ret = sysfs_create_file(&thermal_message_dev.kobj, &dev_attr_ambient_sensor.attr);
 		if (ret < 0)
 			pr_warn("Thermal: create ambient sensor node failed\n");
@@ -2039,6 +2066,7 @@ static void destroy_thermal_message_node(void)
 	sysfs_remove_file(&thermal_message_dev.kobj, &dev_attr_sconfig.attr);
 	sysfs_remove_file(&thermal_message_dev.kobj, &dev_attr_ambient_sensor_temp.attr);
 	sysfs_remove_file(&thermal_message_dev.kobj, &dev_attr_ambient_sensor.attr);
+	sysfs_remove_file(&thermal_message_dev.kobj, &dev_attr_flash_state.attr);
 #ifdef CONFIG_DRM
 	sysfs_remove_file(&thermal_message_dev.kobj, &dev_attr_screen_state.attr);
 #endif
