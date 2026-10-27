@@ -69,7 +69,7 @@ struct screen_monitor sm;
 #endif
 
 static struct device thermal_message_dev;
-static atomic_t switch_mode = ATOMIC_INIT(10);
+static atomic_t switch_mode = ATOMIC_INIT(-1);
 static atomic_t temp_state = ATOMIC_INIT(0);
 static atomic_t balance_mode = ATOMIC_INIT(0);
 static atomic_t board_sensor_temp_comp_default = ATOMIC_INIT(0);
@@ -1733,18 +1733,16 @@ static ssize_t
 thermal_sconfig_store(struct device *dev,
 				      struct device_attribute *attr, const char *buf, size_t len)
 {
-	int ret, val = -1;
+	int val;
+	int ret;
 
 	ret = kstrtoint(buf, 10, &val);
-
 	if (ret)
 		return ret;
+	if (val < 0)
+		return -EINVAL;
 
-	// Check if the value is -1 or 0, if so set to 10, else use the provided value
-	if (val == -1 || val == 0)
-		atomic_set(&switch_mode, 10);
-	else
-		atomic_set(&switch_mode, val);
+	atomic_set(&switch_mode, val);
 
 	return len;
 }
