@@ -75,9 +75,15 @@ static int __init parse_e404_args(char *str)
 #endif
         else if (strcmp(arg, "batt_def") == 0)
             early_batt_profile = 1;
-        else if (strcmp(arg, "batt_5k") == 0)
+        else if (strcmp(arg, "batt_5k") == 0) {
+#ifdef CONFIG_E404_ALIOTH_6K_BATT_DEFAULT
+            /* legacy cmdline; this build defaults to the BN61 6k pack */
+            pr_alert("E404: batt_5k mapped to 6k default\n");
+            early_batt_profile = 3;
+#else
             early_batt_profile = 2;
-        else if (strcmp(arg, "batt_6k") == 0)
+#endif
+        } else if (strcmp(arg, "batt_6k") == 0)
             early_batt_profile = 3;
         else
             pr_alert("E404: Unknown flag: %s\n", arg);

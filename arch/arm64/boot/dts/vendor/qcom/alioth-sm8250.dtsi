@@ -681,11 +681,15 @@ this file is for attribution only of alioth
 
 	alioth_batterydata: qcom,battery-data {
 		qcom,batt-id-range-pct = <15>;
+		/*
+		 * BN61 6000mAh safe profile first so batt-id-only lookups
+		 * (step-chg/JEITA) use its limits too. e404_args=batt_def
+		 * disables the FG profile override.
+		 */
+		#include "fg-gen4-batterydata-alioth-bn61-6000mah.dtsi"
 		#include "fg-gen4-batterydata-alioth-FMT-4520mah.dtsi"
 		#include "fg-gen4-batterydata-alioth-GY-4520mah.dtsi"
 		#include "fg-gen4-batterydata-apollo-sun-5000mah.dtsi"
-		/* BN61 6000mAh safe profile; e404_args=batt_def disables */
-		#include "fg-gen4-batterydata-alioth-bn61-6000mah.dtsi"
 	};
 
 	onewire_gpio: onewire_gpio {
