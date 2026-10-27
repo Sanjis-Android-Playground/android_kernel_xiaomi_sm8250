@@ -2114,6 +2114,16 @@ static int fg_gen4_get_batt_profile(struct fg_dev *fg)
 									fg->batt_id_ohms / 1000,
 									"j3ssun_5000mah");
 			}
+		} else if (e404_data.batt_profile == 3) {
+			if (of_property_read_bool(node, "qcom,bn61-batt-profile") && !fg->profile_already_find) {
+				pr_alert("E404: forcing bn61_6000mah profile\n");
+				fg->profile_already_find = true;
+				/* Avoid retry queueing if verify/retry path exists */
+				retry_batt_profile = BATT_PROFILE_RETRY_COUNT_MAX;
+				profile_node = of_batterydata_get_best_profile(batt_node,
+									fg->batt_id_ohms / 1000,
+									"bn61_6000mah");
+			}
 		}
 #endif
 

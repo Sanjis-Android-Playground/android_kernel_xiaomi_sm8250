@@ -614,6 +614,7 @@ this file is for attribution only of alioth
 	qcom,sun-profile-only;
 	qcom,k11a-batt-profile;
 	qcom,j3s-batt-profile;
+	qcom,bn61-batt-profile;
 	qcom,soc_decimal_rate = <
 		0  38
 		10 35
@@ -683,6 +684,8 @@ this file is for attribution only of alioth
 		#include "fg-gen4-batterydata-alioth-FMT-4520mah.dtsi"
 		#include "fg-gen4-batterydata-alioth-GY-4520mah.dtsi"
 		#include "fg-gen4-batterydata-apollo-sun-5000mah.dtsi"
+		/* select with e404_args=batt_6k */
+		#include "fg-gen4-batterydata-alioth-bn61-6000mah.dtsi"
 	};
 
 	onewire_gpio: onewire_gpio {

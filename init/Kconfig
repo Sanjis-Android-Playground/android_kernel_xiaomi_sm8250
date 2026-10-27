@@ -94,6 +94,11 @@ config E404_ALIOTH_5K_BATT_DEFAULT
 	depends on E404_ATTRIBUTES
 	default n
 
+config E404_ALIOTH_6K_BATT_DEFAULT
+	bool "Set BN61 6000 mAh battery profile for alioth as default"
+	depends on E404_ATTRIBUTES
+	default n
+
 endmenu
 
 menu "General setup"

@@ -17,7 +17,9 @@ int early_dtbo_type = 2;
 #else
 int early_dtbo_type = 1;
 #endif
-#ifdef CONFIG_E404_ALIOTH_5K_BATT_DEFAULT
+#ifdef CONFIG_E404_ALIOTH_6K_BATT_DEFAULT
+int early_batt_profile = 3;
+#elif defined(CONFIG_E404_ALIOTH_5K_BATT_DEFAULT)
 int early_batt_profile = 2;
 #else
 int early_batt_profile = 1;
@@ -75,6 +77,8 @@ static int __init parse_e404_args(char *str)
             early_batt_profile = 1;
         else if (strcmp(arg, "batt_5k") == 0)
             early_batt_profile = 2;
+        else if (strcmp(arg, "batt_6k") == 0)
+            early_batt_profile = 3;
         else
             pr_alert("E404: Unknown flag: %s\n", arg);
     }
