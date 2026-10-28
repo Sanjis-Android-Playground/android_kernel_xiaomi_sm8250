@@ -5,26 +5,25 @@ qcom,bn61-6000mah {
 	 * FG profile. BN61 specification: 6000mAh typical (5850mAh rated),
 	 * 3.87V nominal, 4.45V charge limit, ~23.2Wh.
 	 *
-	 * Safe initial-testing limits: 4.40V max instead of the BN61
-	 * 4.45V limit, 4.38V/4.39V CC-CV, and a 3A charge cap. This keeps
-	 * extra voltage margin and reduces heat until the pack thermistor
-	 * and behavior have been verified. Only the nominal capacity is
-	 * scaled from the J3S data, so SoC accuracy is approximate.
+	 * Keep the conservative J3S voltage/current limits (4.45V max,
+	 * 4.41V CC-CV, 4.43V FFC CC-CV, 6A fast charge) and only scale the
+	 * nominal capacity. This is not a factory-characterized BN61 FG
+	 * profile, so SoC accuracy is approximate.
 	 */
-	qcom,max-voltage-uv = <4400000>;
-	qcom,fastchg-current-ma = <3000>;
+	qcom,max-voltage-uv = <4450000>;
+	qcom,fastchg-current-ma = <6000>;
 	qcom,jeita-fcc-ranges = <(-100)  0   0
-				1  50  600000
-				51  100  1500000
-				101 150  2400000
-				151 440  3000000
-				441 480  1500000>;
-	qcom,jeita-fv-ranges = <(-100)  0   4400000
-				1   50  4400000
-				51  100  4400000
-				101 150  4400000
-				151 440  4400000
-				441 480  4100000>;
+				1  50  980000
+				51  100  2450000
+				101 150  3840000
+				151 440  6000000
+				441 480  2450000>;
+	qcom,jeita-fv-ranges = <(-100)  0   4450000
+				1   50  4450000
+				51  100  4450000
+				101 150  4450000
+				151 440  4450000
+				441 480  4400000>;
 	qcom,jeita-too-hot = <480>;
 	qcom,jeita-too-cold = <0>;
 	qcom,jeita-warm-th= <440>;
@@ -32,8 +31,8 @@ qcom,bn61-6000mah {
 	qcom,use-bq-pump;
 	mi,six-pin-battery;
 	qcom,ffc-term-current-ma = <(-755)>;
-	qcom,fg-cc-cv-threshold-mv = <4380>;
-	qcom,fg-ffc-cc-cv-threshold-mv = <4390>;
+	qcom,fg-cc-cv-threshold-mv = <4410>;
+	qcom,fg-ffc-cc-cv-threshold-mv = <4430>;
 	qcom,nom-batt-capacity-mah = <6000>;
 	qcom,batt-id-kohm = <100>;
 	qcom,battery-beta = <4250>;
