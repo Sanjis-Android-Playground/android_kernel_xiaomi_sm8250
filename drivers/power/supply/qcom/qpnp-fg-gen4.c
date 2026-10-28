@@ -134,6 +134,9 @@
 #define RSLOW_CONFIG_OFFSET		0
 #define NOM_CAP_WORD			271
 #define NOM_CAP_OFFSET			0
+/* Nominal capacity word offset inside the loaded FG profile */
+#define PROFILE_NOM_CAP_OFFSET		((NOM_CAP_WORD - PROFILE_LOAD_WORD) * 2 + \
+					 NOM_CAP_OFFSET)
 #define RCONN_WORD			275
 #define RCONN_OFFSET			0
 #define ACT_BATT_CAP_WORD		285
@@ -2416,6 +2419,8 @@ static bool is_profile_load_required(struct fg_gen4_chip *chip)
 {
 	struct fg_dev *fg = &chip->fg;
 	u8 buf[PROFILE_COMP_LEN], val;
+	u8 cap_buf[2];
+	u16 sram_cap, dt_cap;
 	bool profiles_same = false, valid_integrity = false;
 	int rc, i;
 	u8 white_list_values[] = {
@@ -2471,6 +2476,33 @@ static bool is_profile_load_required(struct fg_gen4_chip *chip)
 
 		profiles_same = memcmp(chip->batt_profile, buf,
 					PROFILE_COMP_LEN) == 0;
+
+		/*
+		 * The stable profile header can match while the nominal
+		 * capacity word differs, for example when only the battery
+		 * capacity was changed. Compare it explicitly, otherwise the
+		 * new capacity is never written to the FG.
+		 */
+		if (profiles_same) {
+			rc = fg_sram_read(fg, NOM_CAP_WORD, NOM_CAP_OFFSET,
+					cap_buf, 2, FG_IMA_DEFAULT);
+			if (rc < 0) {
+				pr_err("Error in reading nominal capacity rc=%d\n",
+					rc);
+				fg->profile_load_status = PROFILE_SKIPPED;
+				return false;
+			}
+
+			sram_cap = cap_buf[0] | cap_buf[1] << 8;
+			dt_cap = chip->batt_profile[PROFILE_NOM_CAP_OFFSET] |
+				 chip->batt_profile[PROFILE_NOM_CAP_OFFSET + 1] << 8;
+			if (sram_cap != dt_cap) {
+				pr_info("FG: nominal capacity changed %u -> %u mAh, loading profile\n",
+					sram_cap, dt_cap);
+				profiles_same = false;
+			}
+		}
+
 		if (profiles_same) {
 			fg_dbg(fg, FG_STATUS, "Battery profile is same, not loading it\n");
 			fg->profile_load_status = PROFILE_LOADED;
