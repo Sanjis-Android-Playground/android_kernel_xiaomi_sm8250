@@ -1,6 +1,0 @@
-config AW8697_HAPTIC
-	tristate "Haptic driver for awinic aw8697 series"
-	depends on I2C
-	help
-	  This option enables support for the AW8697/AW8695 haptic driver
-	  with the AAC RichTap userspace interface (/dev/awinic_haptic).

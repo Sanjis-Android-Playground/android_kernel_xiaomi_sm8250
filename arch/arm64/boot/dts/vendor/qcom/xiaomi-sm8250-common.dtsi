@@ -238,7 +238,6 @@
 		reg = <0x5A>;
 		reset-gpio = <&tlmm 130 0>;
 		irq-gpio = <&tlmm 129 0>;
-		qcom,device_id = <815>;
 		vib_mode = < 0 >;   /*mode:   RAM mode->0; CONT mode -> 1*/
 		vib_f0_pre = < 1700 >;
 		vib_f0_cali_percen = < 7 >;
@@ -282,11 +281,10 @@
 				 20000 20000 20000 20000 20000 0 0 0 0 0
 				 0 0 0 0 0 0 0 0 0 0
 				 0 0 0 0 >;
-		pinctrl-names = "default","aw8697_reset_reset","aw8697_reset_active","aw8697_interrupt_active";
-		pinctrl-0 = <&aw8697_gpio_reset_output_high &aw8697_gpio_int>;
-		pinctrl-1 = <&aw8697_gpio_reset>;
-		pinctrl-2 = <&aw8697_gpio_reset_output_high>;
-		pinctrl-3 = <&aw8697_gpio_int>;
+		pinctrl-names = "aw8697_reset_reset","aw8697_reset_active","aw8697_interrupt_active";
+		pinctrl-0 = <&aw8697_gpio_reset>;
+		pinctrl-1 = <&aw8697_gpio_reset_output_high>;
+		pinctrl-2 = <&aw8697_gpio_int>;
 		status = "ok";
 		wf_0 {
 			/*CLICK*/
