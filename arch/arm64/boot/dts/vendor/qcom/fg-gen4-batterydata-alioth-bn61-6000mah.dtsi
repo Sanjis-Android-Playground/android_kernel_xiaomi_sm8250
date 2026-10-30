@@ -9,10 +9,6 @@
  * This is an approximation, not a factory BN61 profile. The true BN61
  * characterization exists only as a QG profile and needs PM855GUI or
  * a QG-to-FG conversion to be exact.
- *
- * Safety build: earlier voltage-based charge taper and a 20mV lower
- * CC-CV/FFC target to keep the terminal voltage closer to the BN61
- * 4.45V limit.
  */
 
 qcom,bn61_6000mah {
@@ -31,15 +27,6 @@ qcom,bn61_6000mah {
 				101 150  4450000
 				151 440  4450000
 				441 480  4400000>;
-	qcom,step-chg-ranges = <3001000  4150000  6000000
-				4150001  4230000  6000000
-				4230001  4350000  5400000
-				4350001  4400000  4000000
-				4400001  4430000  2500000
-				4430001  4450000  1200000>;
-	qcom,cold-step-chg-ranges = <3000000  4199000  1000000
-				     4200000  4450000  660000>;
-	qcom,taper-fcc;
 	qcom,jeita-too-hot = <480>;
 	qcom,jeita-too-cold = <0>;
 	qcom,jeita-warm-th= <440>;
@@ -47,8 +34,8 @@ qcom,bn61_6000mah {
 	qcom,use-bq-pump;
 	mi,six-pin-battery;
 	qcom,ffc-term-current-ma = <(-755)>;
-	qcom,fg-cc-cv-threshold-mv = <4390>;
-	qcom,fg-ffc-cc-cv-threshold-mv = <4410>;
+	qcom,fg-cc-cv-threshold-mv = <4410>;
+	qcom,fg-ffc-cc-cv-threshold-mv = <4430>;
 	qcom,nom-batt-capacity-mah = <6000>;
 	qcom,batt-id-kohm = <100>;
 	qcom,battery-beta = <4250>;
