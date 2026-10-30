@@ -702,3 +702,5 @@ config GPIO_TESTING_MODE
 	default n
 	help
 	  Enable driver for a simple testing mode detection
+
+source "drivers/misc/aw8697_haptic/Kconfig"
