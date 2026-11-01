@@ -2023,11 +2023,11 @@ static irqreturn_t qpnp_flash_led_irq_handler(int irq, void *_led)
 		}
 
 		if (led_status1)
-			pr_emerg("led short/open fault detected! led_status1=%x\n",
+			pr_warn_ratelimited("led short/open fault detected! led_status1=%x\n",
 				led_status1);
 
 		if (led_status2 & FLASH_LED_VPH_DROOP_FAULT_MASK)
-			pr_emerg("led vph_droop fault detected!\n");
+			pr_warn_ratelimited("led vph_droop fault detected!\n");
 	}
 
 	pr_debug("irq handled, irq_type=%x, irq_status=%x\n", irq_type,

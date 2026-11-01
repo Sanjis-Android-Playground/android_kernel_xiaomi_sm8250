@@ -4924,7 +4924,7 @@ static int sde_crtc_exposure_atomic_check(struct sde_crtc_state *cstate,
 	zpos++;
 
 	if (sde_crtc_config_exposure_dim_layer(&cstate->base, zpos)) {
-		SDE_ERROR("Failed to config dim layer\n");
+		pr_err_ratelimited("[sde error]Failed to config dim layer\n");
 		return -EINVAL;
 	}
 
@@ -5127,7 +5127,8 @@ static int sde_crtc_atomic_check(struct drm_crtc *crtc,
 	rc = _sde_crtc_atomic_check_pstates(crtc, state, pstates,
 			multirect_plane);
 	if (rc) {
-		SDE_ERROR("crtc%d failed pstate check %d\n", crtc->base.id, rc);
+		pr_err_ratelimited("[sde error]crtc%d failed pstate check %d\n",
+				crtc->base.id, rc);
 		goto end;
 	}
 

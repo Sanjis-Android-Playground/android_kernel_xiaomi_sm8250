@@ -6847,7 +6847,11 @@ static int fg_gen4_parse_child_nodes_dt(struct fg_gen4_chip *chip)
 #define DEFAULT_ESR_PULSE_THRESH_MA	47
 #define DEFAULT_ESR_MEAS_CURR_MA	120
 #define DEFAULT_SCALE_VBATT_THR_MV	3400
-#define DEFAULT_SCALE_ALARM_TIMER_MS	20000
+/*
+ * Keep the FVSS re-evaluation alarm well above the 2s alarmtimer suspend
+ * guard so it cannot repeatedly abort system suspend.
+ */
+#define DEFAULT_SCALE_ALARM_TIMER_MS	60000
 #define DEFAULT_BATT_ID_PULLUP_KOHMS	100
 
 static int fg_gen4_parse_dt(struct fg_gen4_chip *chip)
