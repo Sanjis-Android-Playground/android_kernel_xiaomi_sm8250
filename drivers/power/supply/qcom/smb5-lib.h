@@ -183,7 +183,16 @@ enum print_reason {
 #define TAPER_DECREASE_FCC_UA			100000
 #define TAPER_SLOWDECREASE_FCC_UA		50000
 #define TAPER_IBAT_TRH_HYS_UA			50000
-#define MIN_TAPER_FCC_THR_UA			2500000
+/*
+ * Floor for the six-pin soft taper. The top step of the alioth step table
+ * allows 3536mA at 4450mV, so stopping the taper at 2500mA threw away over
+ * 1A of charge current for the whole top-of-charge phase and made the
+ * charge pump fall below its own taper-done threshold at only ~75% SoC.
+ * Keep the floor at the top step so the CP can use the current the DT
+ * already allows; the CP taper and the CV loop still handle the real end
+ * of charge.
+ */
+#define MIN_TAPER_FCC_THR_UA			3500000
 #define SECOND_FFC_TERM_CURRENT_DIFF		98
 
 #define STEP_CHG_DELAYED_MONITOR_MS			10000

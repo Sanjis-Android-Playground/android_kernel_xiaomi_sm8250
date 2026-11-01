@@ -10983,6 +10983,7 @@ static void smblib_six_pin_batt_step_chg_work(struct work_struct *work)
 	int fcc_ua = 0, fv_uv = 0, ibat_ua = 0, capacity = 0, health;
 	int step_soc_th = 0;
 	int ti_battery_voltage = 0, batt_temp = 0;
+	int step_fv_uv = 0;
 	union power_supply_propval pval = {0, };
 
 	rc = smblib_is_input_present(chg, &input_present);
@@ -11168,11 +11169,25 @@ out:
 		}
 
 		if (chg->index_vfloat > 0) {
-			if ((fv_uv == chg->six_pin_step_cfg[chg->index_vfloat].vfloat_step_uv)
+			step_fv_uv =
+				chg->six_pin_step_cfg[chg->index_vfloat].vfloat_step_uv;
+			if ((fv_uv == step_fv_uv)
 					&& ti_battery_voltage > (fv_uv / 1000)) {
 				fv_uv -= 10000;
 				vote(chg->fv_votable, SIX_PIN_VFLOAT_VOTER, true, fv_uv);
 				pr_err("ti_battery_voltage > vfloat_step_uv, reduce uv:%d.\n", fv_uv);
+			} else if ((fv_uv == step_fv_uv - 10000)
+					&& ti_battery_voltage < (fv_uv / 1000) - 10) {
+				/*
+				 * The reduction above has no way back, so a 1mV
+				 * overshoot used to park the float 10mV low for
+				 * the rest of the charge. Restore it once the
+				 * battery voltage has fallen clear of the step.
+				 */
+				vote(chg->fv_votable, SIX_PIN_VFLOAT_VOTER, true,
+						step_fv_uv);
+				pr_info("ti_battery_voltage below vfloat hyst, restore uv:%d.\n",
+						step_fv_uv);
 			}
 			if ((fcc_ua == chg->six_pin_step_cfg[chg->index_vfloat].fcc_step_ua)
 					&& ibat_ua > fcc_ua) {

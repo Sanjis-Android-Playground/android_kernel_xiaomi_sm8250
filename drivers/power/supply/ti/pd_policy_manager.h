@@ -137,7 +137,14 @@ enum pm_state {
 #define TAPER_DONE_FFC_MA_LN8000		2500
 #define TAPER_DONE_FFC_MA_LN8000_PIPA		2600
 #define TAPER_DONE_FFC_MA_LN8000_DAGU		2600
-#define TAPER_DONE_NORMAL_MA			2200
+/*
+ * Battery current at which the charge pump is considered tapered out.
+ * alioth's CP was exiting at 2200mA, which with the old 2500mA FCC floor
+ * happened at ~75% SoC and forced the rest of the charge onto the switch
+ * charger. Let it run down to 1500mA so the efficient CP path covers the
+ * 75-85% band too.
+ */
+#define TAPER_DONE_NORMAL_MA			1500
 
 #define VBAT_HIGH_FOR_FC_HYS_MV		100
 #define CAPACITY_TOO_HIGH_THR			95
