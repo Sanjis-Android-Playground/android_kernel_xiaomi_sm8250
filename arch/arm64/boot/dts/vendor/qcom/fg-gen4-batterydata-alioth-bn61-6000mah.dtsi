@@ -1,15 +1,16 @@
 /*
- * Alioth / EB-BM415ABY 6800mAh - experimental 7k profile
+ * Alioth / EB-BM415ABY 7500mAh - experimental profile
  *
  * EXPERIMENTAL, not a characterized profile.
  *
  * Target cell: LONG LIFE EB-BM415ABY (Samsung Galaxy M41 class)
  *   1ICP7/66/87, Li-ion, 3.86V nominal, 4.43V charge limit
- *   6800mAh rated / 7000mAh typical
+ *   6800mAh rated / 7000mAh typical; this test profile uses 7500mAh
+ *   (above the rated value, so the gauge will be optimistic).
  *
  * The OCV/IR blob is the in-tree 4.46V high-capacity FG-gen4 data
  * from fg-gen4-batterydata-pipa-sunwoda-8840mah.dtsi, with the
- * nominal-capacity word set to 6800mAh (0x1A90). All charge,
+ * nominal-capacity word set to 7500mAh (0x1D4C). All charge,
  * JEITA and step-charge limits are capped for this cell:
  *
  *   max-voltage-uv            4430000  (cell limit 4.43V)
@@ -50,7 +51,7 @@ qcom,bn61_6000mah {
 	qcom,ffc-term-current-ma = <(-755)>;
 	qcom,fg-cc-cv-threshold-mv = <4390>;
 	qcom,fg-ffc-cc-cv-threshold-mv = <4410>;
-	qcom,nom-batt-capacity-mah = <6800>;
+	qcom,nom-batt-capacity-mah = <7500>;
 	qcom,batt-id-kohm = <100>;
 	qcom,battery-beta = <4250>;
 	qcom,therm-room-temp = <100000>;
@@ -168,6 +169,6 @@ qcom,bn61_6000mah {
 		 D9 05 4A 02
 		 8F 00 9D 00
 		 C0 00 FA 00
-		 90 1A 00 00
+		 4C 1D 00 00
 	];
 };
