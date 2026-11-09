@@ -519,9 +519,9 @@ this file is for attribution only of alioth
 	status = "ok";
 	qcom,sec-charger-config = <0>;
 	qcom,usb-icl-ua = <3000000>;
-	qcom,fcc-max-ua = <6000000>;
-	qcom,fv-max-uv = <4450000>;
-	qcom,non-fcc-fv-max-uv = <4450000>;
+	qcom,fcc-max-ua = <3000000>;
+	qcom,fv-max-uv = <4430000>;
+	qcom,non-fcc-fv-max-uv = <4430000>;
 	qcom,dc-icl-ua = <1000000>;
 	qcom,auto-recharge-soc = <99>;
 	qcom,chg-term-src = <1>;
@@ -533,9 +533,9 @@ this file is for attribution only of alioth
 	//qcom,suspend-input-on-debug-batt;
 	qcom,usbpd-phandle = <&pm8150b_pdphy>;
 	qcom,battery-data = <&alioth_batterydata>;
-	mi,six-pin-step-chg-params = <4250000  6000000
-				4400000  5400000
-				4450000  3536000>;
+	mi,six-pin-step-chg-params = <4250000  3000000
+				4400000  3000000
+				4430000  3000000>;
 	mi,six-pin-step-chg;
 	mi,six-pin-soc-th = <22>;
 	mi,fcc-batt-unverify-ua = <3000000>;
@@ -682,9 +682,11 @@ this file is for attribution only of alioth
 	alioth_batterydata: qcom,battery-data {
 		qcom,batt-id-range-pct = <15>;
 		/*
-		 * BN61 6000mAh profile first so batt-id-only lookups
-		 * (step-chg/JEITA) use its limits too. e404_args=batt_def
-		 * disables the FG profile override.
+		 * The first profile is what batt-id-only lookups
+		 * (step-chg/JEITA) use. For this experimental build it is
+		 * the EB-BM415ABY 6800mAh / 4.43V / 3A profile, kept under
+		 * the bn61_6000mah node name so e404_args=batt_6k still
+		 * selects it. Revert to restore the 6000mAh BN61 profile.
 		 */
 		#include "fg-gen4-batterydata-alioth-bn61-6000mah.dtsi"
 		#include "fg-gen4-batterydata-alioth-FMT-4520mah.dtsi"

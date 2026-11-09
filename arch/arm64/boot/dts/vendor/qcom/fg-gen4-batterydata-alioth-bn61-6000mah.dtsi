@@ -1,37 +1,46 @@
 /*
- * Alioth BN61 6000mAh - experimental high-capacity FG profile
+ * Alioth / EB-BM415ABY 6800mAh - experimental 7k profile
  *
- * EXPERIMENTAL, not a characterized BN61 profile.
+ * EXPERIMENTAL, not a characterized profile.
  *
- * The previous profile was the 5037mAh J3S/sun curve with only the
- * nominal-capacity word changed to 6000mAh, so the OCV/IR tables still
- * described a ~5000mAh cell and the runtime matched the 5k profile.
+ * Target cell: LONG LIFE EB-BM415ABY (Samsung Galaxy M41 class)
+ *   1ICP7/66/87, Li-ion, 3.86V nominal, 4.43V charge limit
+ *   6800mAh rated / 7000mAh typical
  *
- * This variant uses the in-tree 4.46V high-capacity FG-gen4 blob from
- * fg-gen4-batterydata-pipa-sunwoda-8840mah.dtsi (M82 sunwoda 8840mAh),
- * with the nominal-capacity word set to 6000mAh (0x1770) and all
- * charge/JEITA/step-charge limits capped for the 4.45V BN61 cell.
- * The point is to test whether a high-capacity 4.46V OCV curve tracks
- * the real pack better than the 5037mAh J3S curve. If SoC still runs
- * away at the top, this must be reverted.
+ * The OCV/IR blob is the in-tree 4.46V high-capacity FG-gen4 data
+ * from fg-gen4-batterydata-pipa-sunwoda-8840mah.dtsi, with the
+ * nominal-capacity word set to 6800mAh (0x1A90). All charge,
+ * JEITA and step-charge limits are capped for this cell:
+ *
+ *   max-voltage-uv            4430000  (cell limit 4.43V)
+ *   fastchg-current-ma        3000     (do not exceed ~0.44C)
+ *   fg-cc-cv-threshold-mv     4390
+ *   fg-ffc-cc-cv-threshold-mv 4410
+ *   jeita-fv-ranges           4430000 / 4400000
+ *   jeita-fcc-ranges          max 3000000
+ *
+ * The node/battery-type name is intentionally kept as bn61_6000mah
+ * so the existing e404_args=batt_6k force and the batt-id profile
+ * lookup in step-chg/JEITA both select this profile. Revert this
+ * commit to restore the 6000mAh BN61 profile.
  */
 
 qcom,bn61_6000mah {
 	qcom,profile-revision = <24>;
-	qcom,max-voltage-uv = <4450000>;
-	qcom,fastchg-current-ma = <6000>;
+	qcom,max-voltage-uv = <4430000>;
+	qcom,fastchg-current-ma = <3000>;
 	qcom,jeita-fcc-ranges = <(-100)  0   0
 				1  50  980000
 				51  100  2450000
-				101 150  3840000
-				151 440  6000000
+				101 150  3000000
+				151 440  3000000
 				441 480  2450000>;
-	qcom,jeita-fv-ranges = <(-100)  0   4450000
-				1   50  4450000
-				51  100  4450000
-				101 150  4450000
-				151 440  4450000
-				441 480  4400000>;
+	qcom,jeita-fv-ranges = <(-100)  0   4430000
+				1   50   4430000
+				51  100   4430000
+				101 150   4430000
+				151 440   4430000
+				441 480   4400000>;
 	qcom,jeita-too-hot = <480>;
 	qcom,jeita-too-cold = <0>;
 	qcom,jeita-warm-th= <440>;
@@ -39,9 +48,9 @@ qcom,bn61_6000mah {
 	qcom,use-bq-pump;
 	mi,six-pin-battery;
 	qcom,ffc-term-current-ma = <(-755)>;
-	qcom,fg-cc-cv-threshold-mv = <4410>;
-	qcom,fg-ffc-cc-cv-threshold-mv = <4430>;
-	qcom,nom-batt-capacity-mah = <6000>;
+	qcom,fg-cc-cv-threshold-mv = <4390>;
+	qcom,fg-ffc-cc-cv-threshold-mv = <4410>;
+	qcom,nom-batt-capacity-mah = <6800>;
 	qcom,batt-id-kohm = <100>;
 	qcom,battery-beta = <4250>;
 	qcom,therm-room-temp = <100000>;
@@ -159,6 +168,6 @@ qcom,bn61_6000mah {
 		 D9 05 4A 02
 		 8F 00 9D 00
 		 C0 00 FA 00
-		 70 17 00 00
+		 90 1A 00 00
 	];
 };
