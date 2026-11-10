@@ -614,7 +614,7 @@ this file is for attribution only of alioth
 	qcom,sun-profile-only;
 	qcom,k11a-batt-profile;
 	qcom,j3s-batt-profile;
-	qcom,bn61-batt-profile;
+	qcom,bm71-batt-profile;
 	qcom,soc_decimal_rate = <
 		0  38
 		10 35
@@ -685,10 +685,10 @@ this file is for attribution only of alioth
 		 * The first profile is what batt-id-only lookups
 		 * (step-chg/JEITA) use. For this experimental build it is
 		 * the EB-BM415ABY 6800mAh / 4.43V / 3A profile, kept under
-		 * the bn61_6000mah node name so e404_args=batt_6k still
+		 * the bm71_7555mah node name so e404_args=batt_6k still
 		 * selects it. Revert to restore the 6000mAh BN61 profile.
 		 */
-		#include "fg-gen4-batterydata-alioth-bn61-6000mah.dtsi"
+		#include "fg-gen4-batterydata-alioth-bm71-7555mah.dtsi"
 		#include "fg-gen4-batterydata-alioth-FMT-4520mah.dtsi"
 		#include "fg-gen4-batterydata-alioth-GY-4520mah.dtsi"
 		#include "fg-gen4-batterydata-apollo-sun-5000mah.dtsi"

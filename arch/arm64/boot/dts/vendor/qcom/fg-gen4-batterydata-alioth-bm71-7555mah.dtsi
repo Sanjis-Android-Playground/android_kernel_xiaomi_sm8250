@@ -20,13 +20,12 @@
  *   jeita-fv-ranges           4430000 / 4400000
  *   jeita-fcc-ranges          max 3000000
  *
- * The node/battery-type name is intentionally kept as bn61_6000mah
- * so the existing e404_args=batt_6k force and the batt-id profile
- * lookup in step-chg/JEITA both select this profile. Revert this
- * commit to restore the 6000mAh BN61 profile.
+ * The node/battery-type name is bm71_7555mah. The e404_args=batt_6k
+ * force and the batt-id lookup in step-chg/JEITA both select this
+ * profile (the e404 flag name itself is unchanged).
  */
 
-qcom,bn61_6000mah {
+qcom,bm71_7555mah {
 	qcom,profile-revision = <24>;
 	qcom,max-voltage-uv = <4430000>;
 	qcom,fastchg-current-ma = <3000>;
@@ -55,7 +54,7 @@ qcom,bn61_6000mah {
 	qcom,batt-id-kohm = <100>;
 	qcom,battery-beta = <4250>;
 	qcom,therm-room-temp = <100000>;
-	qcom,battery-type = "bn61_6000mah";
+	qcom,battery-type = "bm71_7555mah";
 	qcom,therm-coefficients = <0x2318 0xd0c 0xdaf7 0xc556 0x848d>;
 	qcom,therm-center-offset = <0x70>;
 	qcom,therm-pull-up = <100>;
