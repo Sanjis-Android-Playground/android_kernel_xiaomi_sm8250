@@ -14,11 +14,11 @@
  * JEITA and step-charge limits are capped for this cell:
  *
  *   max-voltage-uv            4430000  (cell limit 4.43V)
- *   fastchg-current-ma        3000     (do not exceed ~0.44C)
+ *   fastchg-current-ma        6000     (test: aggressive charge rate)
  *   fg-cc-cv-threshold-mv     4390
  *   fg-ffc-cc-cv-threshold-mv 4410
  *   jeita-fv-ranges           4430000 / 4400000
- *   jeita-fcc-ranges          max 3000000
+ *   jeita-fcc-ranges          max 6000000
  *
  * The node/battery-type name is bm71_7555mah. The e404_args=batt_6k
  * force and the batt-id lookup in step-chg/JEITA both select this
@@ -28,12 +28,12 @@
 qcom,bm71_7555mah {
 	qcom,profile-revision = <24>;
 	qcom,max-voltage-uv = <4430000>;
-	qcom,fastchg-current-ma = <3000>;
+	qcom,fastchg-current-ma = <6000>;
 	qcom,jeita-fcc-ranges = <(-100)  0   0
 				1  50  980000
 				51  100  2450000
-				101 150  3000000
-				151 440  3000000
+				101 150  6000000
+				151 440  6000000
 				441 480  2450000>;
 	qcom,jeita-fv-ranges = <(-100)  0   4430000
 				1   50   4430000
