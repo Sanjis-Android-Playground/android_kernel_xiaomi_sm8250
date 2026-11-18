@@ -631,10 +631,10 @@ this file is for attribution only of alioth
 	qcom,fg-ffc-sys-term-current = <(-1300)>;
 	qcom,ki-coeff-low-chg = <315>;
 	qcom,ki-coeff-med-chg = <183>;
-	qcom,fg-cutoff-voltage = <3400>;
-	qcom,fg-cutoff-voltage-global = <3400>;
+	qcom,fg-cutoff-voltage = <3300>;
+	qcom,fg-cutoff-voltage-global = <3300>;
 	qcom,fg-cutoff-current = <200>;
-	qcom,fg-empty-voltage = <3100>;
+	qcom,fg-empty-voltage = <3000>;
 	qcom,fg-batt-temp-hyst = <1>;
 	qcom,fg-batt-temp-delta = <6>;
 	qcom,soc-scale-vbatt-mv = <3600>;
