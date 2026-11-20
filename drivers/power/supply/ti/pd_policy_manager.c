@@ -78,7 +78,12 @@ static struct pdpm_config pm_config = {
 	.min_adapter_volt_required	= 10000,
 	.min_adapter_curr_required	= 2000,
 
-	.min_vbat_for_cp		= 3500,
+	/*
+	 * Start the 2:1 charge pump at 3.4V instead of 3.5V so a nearly
+	 * empty pack can use the CP path while the boot load is high.
+	 * The 4.43V charge limit and all safety thresholds are unchanged.
+	 */
+	.min_vbat_for_cp		= 3400,
 
 	.cp_sec_enable			= true,
 	.fc2_disable_sw			= true,
