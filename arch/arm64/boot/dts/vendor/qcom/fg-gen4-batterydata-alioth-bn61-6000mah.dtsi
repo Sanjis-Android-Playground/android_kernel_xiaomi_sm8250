@@ -6,18 +6,18 @@ qcom,bn61-6000mah {
 	 * 3.87V nominal, 4.40V charge limit, ~23.2Wh.
 	 *
 	 * Keep the J3S voltage/current limits, capped to the BN61 4.40V
-	 * charge limit (4.38V max, 4.36V CC-CV, 4.37V FFC CC-CV, 5A fast
+	 * charge limit (4.38V max, 4.36V CC-CV, 4.37V FFC CC-CV, 6A fast
 	 * charge), and only scale the nominal capacity. This is not a
 	 * factory-characterized BN61 FG profile, so SoC accuracy is
 	 * approximate.
 	 */
 	qcom,max-voltage-uv = <4380000>;
-	qcom,fastchg-current-ma = <5000>;
+	qcom,fastchg-current-ma = <6000>;
 	qcom,jeita-fcc-ranges = <(-100)  0   0
-				1  50  900000
-				51  100  2200000
-				101 150  3500000
-				151 420  5000000
+				1  50  980000
+				51  100  2450000
+				101 150  3840000
+				151 420  6000000
 				421 450  2200000
 				451 580  0>;
 	qcom,jeita-fv-ranges = <(-100)  0   4380000
