@@ -122,6 +122,10 @@ static int request_vreg_gpio(struct fpc1020_data *fpc1020, bool enable)
 		fpc1020->gpios_requested = true;
 	} else if (!enable && fpc1020->gpios_requested) {
 		if (fpc1020->irq_requested) {
+			// enable_irq_wake() above needs its counterpart, or the IRQ
+			// stays armed as a wakeup source with a no-suspend handler
+			// and the kernel reports it as a misconfigured IRQ.
+			disable_irq_wake(gpio_to_irq(fpc1020->irq_gpio));
 			devm_free_irq(fpc1020->dev, gpio_to_irq(fpc1020->irq_gpio), fpc1020);
 			fpc1020->irq_requested = false;
 		}
@@ -676,7 +680,12 @@ static int fpc1020_probe(struct platform_device *pdev)
 
 	atomic_set(&fpc1020->wakeup_enabled, 1);
 
-	fpc1020->irqf = IRQF_TRIGGER_RISING | IRQF_ONESHOT | IRQF_NO_SUSPEND;
+	fpc1020->irqf = IRQF_TRIGGER_RISING | IRQF_ONESHOT;
+	// IRQF_NO_SUSPEND plus enable_irq_wake() on the same IRQ is what the
+	// kernel's irq_may_run() reports as a misconfigured IRQ, and the wakeup
+	// source then aborts suspend. Only arm it if the DT asks for it.
+	if (of_property_read_bool(dev->of_node, "fpc,enable-wakeup"))
+		fpc1020->irqf |= IRQF_NO_SUSPEND;
 	fpc1020->gpios_requested = false;
 	device_init_wakeup(dev, 1);
 
